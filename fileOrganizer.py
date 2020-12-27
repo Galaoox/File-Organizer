@@ -1,4 +1,5 @@
 import os
+import shutil
 
 path = os.path.join(os.getcwd(),'../')
 typeFiles = {
@@ -23,25 +24,30 @@ def createDirectories():
         createDirectory(directoryName, path)
 
 
-createDirectories()
+def moveFile(nameFile, directory):
+    shutil.move(path + nameFile, path +directory + '/' + nameFile)
 
 def validateTypeFile(nameFile):
+    findedType = False
     for typeFile in typeFiles.keys():
+        
         if nameFile.endswith(tuple(typeFiles[typeFile])):
-            print(nameFile, typeFile)
+            moveFile(nameFile, typeFile)
+            findedType = True
+            break
+    if findedType == False:
+        moveFile(nameFile, 'OTHERS')
+
+createDirectories()
 
 nameFiles = os.listdir(path)
 
-def formatName(name: str):
-    name = name.replace('-', ' ').upper().split()
-    print('godd')
-    name[len(name) -1] =name[len(name) -1].lower()
-    return '-'.join(name)
-    
+
+
 
 for nameFile in nameFiles:
-    formatName(nameFile)
-#     validateTypeFile(nameFile)
+    if os.path.isdir(path + nameFile) == False:
+        validateTypeFile(nameFile)
 
 textTest = '    Hola esto es un nombre de  archivbo 123213213213213 -SAD.png'
 
@@ -49,7 +55,6 @@ textTest = '    Hola esto es un nombre de  archivbo 123213213213213 -SAD.png'
 
 
 
-formatName(textTest)
 
 
 
